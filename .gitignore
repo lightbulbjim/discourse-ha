@@ -2,3 +2,7 @@
 *.swp
 .terraform
 *.tfstate.backup
+.terraform.tfstate.lock.info
+
+# Ignoring this for the purposes of the exercise. Would normally be tracked in prod.
+terraform.tfstate
