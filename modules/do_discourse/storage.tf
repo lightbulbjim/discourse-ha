@@ -16,12 +16,20 @@ resource "digitalocean_database_firewall" "postgres" {
   }
 }
 
-#resource "digitalocean_database_cluster" "redis" {
-#  name                 = "discourse"
-#  region               = local.region
-#  private_network_uuid = digitalocean_vpc.discourse.id
-#  engine               = "redis"
-#  version              = "6"
-#  size                 = "db-s-1vcpu-1gb"
-#  node_count           = 1
-#}
+resource "digitalocean_database_cluster" "redis" {
+  name                 = "discourse"
+  region               = var.region
+  private_network_uuid = digitalocean_vpc.main.id
+  engine               = "redis"
+  version              = "6"
+  size                 = "db-s-1vcpu-1gb"
+  node_count           = 1
+}
+
+resource "digitalocean_database_firewall" "redis" {
+  cluster_id = digitalocean_database_cluster.redis.id
+  rule {
+    type  = "tag"
+    value = local.app_tag
+  }
+}
