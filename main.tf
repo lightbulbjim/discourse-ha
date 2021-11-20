@@ -8,11 +8,11 @@ module "discourse_killred_net" {
 
 # These are just here so that they end up in stdout.
 output "loadbalancer_ip" {
-  value       = module.discourse_killred_net.loadbalancer_ip
   description = "Public IP of the front door load balancer."
+  value       = module.discourse_killred_net.loadbalancer_ip
 }
 
-output "appserver_ips" {
-  value       = module.discourse_killred_net.app_server_ip
-  description = "Public management (SSH) IPs of the app servers."
+output "app_server_management_names" {
+  description = "Public management (SSH) names of the app servers."
+  value       = module.discourse_killred_net.app_server_management_names
 }

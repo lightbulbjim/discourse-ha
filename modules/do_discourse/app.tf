@@ -10,8 +10,18 @@ resource "digitalocean_droplet" "app" {
   tags = [local.app_tag]
 }
 
-output "app_server_ip" {
-  value = digitalocean_droplet.app.*.ipv4_address
+# Simple name for SSH management.
+resource "digitalocean_record" "management" {
+  count  = var.droplet_count
+  domain = var.domain
+  type   = "A"
+  name   = "app${count.index}.${digitalocean_record.public.fqdn}."
+  ttl    = 60
+  value  = digitalocean_droplet.app[count.index].ipv4_address
+}
+
+output "app_server_management_names" {
+  value = digitalocean_record.management.*.fqdn
 }
 
 resource "digitalocean_firewall" "app_firewall" {
