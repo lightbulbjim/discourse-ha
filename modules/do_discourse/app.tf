@@ -1,6 +1,21 @@
+resource "digitalocean_droplet" "discourse0" {
+  name     = "${var.site_name}-discourse0"
+  region   = var.region
+  vpc_uuid = digitalocean_vpc.main.id
+  image    = var.droplet_image
+  size     = var.droplet_size
+  ssh_keys = [data.digitalocean_ssh_key.terraform.id]
+  #  user_data = templatefile("cloud-config.yml.tpl", {})
+  tags = [local.app_tag]
+}
+
+output "discourse0_ip" {
+  value = "${var.site_name}: ${digitalocean_droplet.discourse0.ipv4_address}"
+}
+
 resource "digitalocean_firewall" "app_firewall" {
-  name = "discourse-app"
-  tags = ["discourse-app"]
+  name = "${var.site_name}-app"
+  tags = [local.app_tag]
 
   inbound_rule {
     protocol         = "tcp"
@@ -30,19 +45,4 @@ resource "digitalocean_firewall" "app_firewall" {
     protocol              = "icmp"
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
-}
-
-resource "digitalocean_droplet" "discourse0" {
-  name      = "discourse0"
-  region    = local.region
-  vpc_uuid  = digitalocean_vpc.discourse.id
-  image     = local.droplet_image
-  size      = local.droplet_size
-  ssh_keys  = [data.digitalocean_ssh_key.terraform.id]
-  user_data = templatefile("cloud-config.yml.tpl", {})
-  tags      = ["discourse-app"]
-}
-
-output "discourse0_ip" {
-  value = digitalocean_droplet.discourse0.ipv4_address
 }

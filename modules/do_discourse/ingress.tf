@@ -1,33 +1,31 @@
-# The actual domain is defined elsewhere. Don't want to accidentally destroy
-# it and leave a dangling delegation behind.
-resource "digitalocean_record" "apex" {
-  domain = "discourse.killred.net"
+resource "digitalocean_record" "public" {
+  domain = var.domain
   type   = "A"
-  name   = "@"
-  ttl    = 300
+  name   = var.subdomain
+  ttl    = 300 # Would make it a bit longer in prod.
   value  = digitalocean_loadbalancer.public.ip
 }
 
 # Hit the Let's Encrypt rate limit, oops!
 # Using a self-signed cert for now.
 resource "digitalocean_certificate" "public" {
-  name = "discourse-killred-net"
+  name = "${var.site_name}-public"
   #type    = "lets_encrypt"
-  #domains = ["discourse.killred.net"]
+  #domains = [digitalocean_record.apex.fqdn]
   private_key      = file("../ssl/discourse.key")
   leaf_certificate = file("../ssl/discourse.crt")
 }
 
-resource "digitalocean_vpc" "discourse" {
-  name   = "discourse"
-  region = local.region
+resource "digitalocean_vpc" "main" {
+  name   = var.site_name
+  region = var.region
 }
 
 resource "digitalocean_loadbalancer" "public" {
-  name        = "discourse-public"
-  region      = local.region
-  vpc_uuid    = digitalocean_vpc.discourse.id
-  droplet_tag = "discourse-app"
+  name        = "${var.site_name}-public"
+  region      = var.region
+  vpc_uuid    = digitalocean_vpc.main.id
+  droplet_tag = local.app_tag
 
   redirect_http_to_https = true
   forwarding_rule {
@@ -55,5 +53,5 @@ resource "digitalocean_loadbalancer" "public" {
 }
 
 output "loadbalancer_ip" {
-  value = digitalocean_loadbalancer.public.ip
+  value = "${var.site_name}: ${digitalocean_loadbalancer.public.ip}"
 }
