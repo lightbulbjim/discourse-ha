@@ -57,3 +57,13 @@ resource "digitalocean_firewall" "app_firewall" {
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
 }
+
+//noinspection HILUnresolvedReference
+resource "digitalocean_record" "email" {
+  for_each = { for i, v in var.email_cnames : i => v } # Oh Terraform...
+  domain   = var.domain
+  type     = "CNAME"
+  name     = each.value.name
+  ttl      = 300
+  value    = each.value.value
+}

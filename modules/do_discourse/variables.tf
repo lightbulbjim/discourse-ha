@@ -47,6 +47,32 @@ variable "droplet_size" {
   default     = "s-1vcpu-1gb"
 }
 
+variable "smtp_server" {
+  description = "ESP SMTP server."
+  type        = string
+  default     = "smtp.sendgrid.net"
+}
+
+variable "smtp_user" {
+  description = "ESP user name."
+  type        = string
+  default     = "apikey"
+}
+
+variable "smtp_password" {
+  description = "ESP password."
+  type        = string
+  sensitive   = true
+}
+
+variable "email_cnames" {
+  description = "Any required ESP CNAME records. Name must be fully qualified."
+  type = list(object({
+    name  = string
+    value = string
+  }))
+}
+
 locals {
   app_tag = "${var.site_name}-app"
 }
