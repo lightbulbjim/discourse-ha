@@ -33,3 +33,12 @@ resource "digitalocean_database_firewall" "redis" {
     value = local.app_tag
   }
 }
+
+# Bucket name needs to be unique.
+resource "random_id" "id" {
+  byte_length = 8
+}
+
+resource "digitalocean_spaces_bucket" "assets" {
+  name = "${var.site_name}-${random_id.id.hex}"
+}
