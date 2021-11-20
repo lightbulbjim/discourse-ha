@@ -20,10 +20,6 @@ resource "digitalocean_record" "management" {
   value  = digitalocean_droplet.app[count.index].ipv4_address
 }
 
-output "app_server_management_names" {
-  value = digitalocean_record.management.*.fqdn
-}
-
 resource "digitalocean_firewall" "app_firewall" {
   name = "${var.site_name}-app"
   tags = [local.app_tag]
