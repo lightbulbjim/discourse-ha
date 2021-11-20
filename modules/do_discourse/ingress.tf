@@ -53,5 +53,5 @@ resource "digitalocean_loadbalancer" "public" {
 }
 
 output "loadbalancer_ip" {
-  value = "${var.site_name}: ${digitalocean_loadbalancer.public.ip}"
+  value = digitalocean_loadbalancer.public.ip
 }

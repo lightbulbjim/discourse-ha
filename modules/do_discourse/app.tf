@@ -1,5 +1,6 @@
-resource "digitalocean_droplet" "discourse0" {
-  name     = "${var.site_name}-discourse0"
+resource "digitalocean_droplet" "app" {
+  count    = var.droplet_count
+  name     = "${var.site_name}-app${count.index}"
   region   = var.region
   vpc_uuid = digitalocean_vpc.main.id
   image    = var.droplet_image
@@ -9,8 +10,8 @@ resource "digitalocean_droplet" "discourse0" {
   tags = [local.app_tag]
 }
 
-output "discourse0_ip" {
-  value = "${var.site_name}: ${digitalocean_droplet.discourse0.ipv4_address}"
+output "app_server_ip" {
+  value = digitalocean_droplet.app.*.ipv4_address
 }
 
 resource "digitalocean_firewall" "app_firewall" {
