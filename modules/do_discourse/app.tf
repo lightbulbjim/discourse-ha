@@ -1,13 +1,17 @@
 resource "digitalocean_droplet" "app" {
-  count    = var.droplet_count
-  name     = "${var.site_name}-app${count.index}"
-  region   = var.region
-  vpc_uuid = digitalocean_vpc.main.id
-  image    = var.droplet_image
-  size     = var.droplet_size
-  ssh_keys = [data.digitalocean_ssh_key.terraform.id]
-  #  user_data = templatefile("cloud-config.yml.tpl", {})
-  tags = [local.app_tag]
+  count     = var.droplet_count
+  name      = "${var.site_name}-app${count.index}"
+  region    = var.region
+  vpc_uuid  = digitalocean_vpc.main.id
+  image     = var.droplet_image
+  size      = var.droplet_size
+  ssh_keys  = [data.digitalocean_ssh_key.terraform.id]
+  user_data = templatefile("${path.module}/cloud-config.yml.tpl", {})
+  tags      = [local.app_tag]
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Simple name for SSH management.

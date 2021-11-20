@@ -8,6 +8,6 @@ packages:
   - nginx
 
 runcmd:
-  - echo hello
+  - git clone https://github.com/discourse/discourse_docker.git /var/discourse
 
 final_message: "System boot took $UPTIME seconds"
