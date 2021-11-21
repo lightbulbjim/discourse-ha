@@ -16,8 +16,13 @@ resource "digitalocean_database_firewall" "postgres" {
   }
 }
 
+resource "digitalocean_database_db" "postgres" {
+  cluster_id = digitalocean_database_cluster.postgres.id
+  name       = "discourse"
+}
+
 resource "digitalocean_database_cluster" "redis" {
-  name                 = "discourse"
+  name                 = "${var.site_name}-redis"
   region               = var.region
   private_network_uuid = digitalocean_vpc.main.id
   engine               = "redis"

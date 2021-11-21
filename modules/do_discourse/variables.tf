@@ -44,13 +44,25 @@ variable "droplet_image" {
 variable "droplet_size" {
   description = "Droplet size to use for app servers."
   type        = string
-  default     = "s-1vcpu-1gb"
+  default     = "s-1vcpu-2gb"
+}
+
+variable "swap_gb" {
+  description = "Size of swap file (in GB) on app servers."
+  type        = number
+  default     = 2
 }
 
 variable "smtp_server" {
   description = "ESP SMTP server."
   type        = string
   default     = "smtp.sendgrid.net"
+}
+
+variable "smtp_server_port" {
+  description = "ESP SMTP server port."
+  type        = number
+  default     = 587
 }
 
 variable "smtp_user" {
@@ -71,6 +83,17 @@ variable "email_cnames" {
     name  = string
     value = string
   }))
+}
+
+variable "workers" {
+  description = "Number of Unicorn workers."
+  type        = number
+  default     = 2
+}
+
+variable "admin_emails" {
+  description = "List of emails addresses that will be made admin in Discourse."
+  type        = list(string)
 }
 
 locals {

@@ -1,5 +1,9 @@
 #cloud-config
 
+swap:
+  filename: /swap.img
+  size: ${swap_bytes}
+
 package_update: true
 package_upgrade: true
 
@@ -15,6 +19,7 @@ write_files:
 
 runcmd:
   - git clone https://github.com/discourse/discourse_docker.git /var/discourse
+  - mv /root/app.yml /var/discourse/containers/
   - cd /var/discourse
 
 final_message: "Provisioning complete after $UPTIME seconds."

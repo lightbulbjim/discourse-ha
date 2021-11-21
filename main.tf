@@ -19,6 +19,7 @@ module "discourse_killred_net" {
       value = "s2.domainkey.u24288042.wl043.sendgrid.net."
     }
   ]
+  admin_emails = ["chris@killred.net"]
 }
 
 # These are just here so that they end up in stdout.
