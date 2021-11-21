@@ -1,3 +1,23 @@
+data "template_file" "discourse-app-config" {
+  template = file("${path.module}/templates/app.yml.tpl")
+  vars = {
+    hostname = digitalocean_record.public.fqdn
+  }
+}
+
+data "template_cloudinit_config" "app" {
+  # DO doesn't support gzip/base64 user_data
+  gzip          = false
+  base64_encode = false
+
+  part {
+    content_type = "text/cloud-config"
+    content = templatefile("${path.module}/templates/cloud-config.yml.tpl", {
+      app_yml_encoded = base64encode(data.template_file.discourse-app-config.rendered)
+    })
+  }
+}
+
 resource "digitalocean_droplet" "app" {
   count     = var.droplet_count
   name      = "${var.site_name}-app${count.index}"
@@ -6,7 +26,7 @@ resource "digitalocean_droplet" "app" {
   image     = var.droplet_image
   size      = var.droplet_size
   ssh_keys  = [data.digitalocean_ssh_key.terraform.id]
-  user_data = templatefile("${path.module}/cloud-config.yml.tpl", {})
+  user_data = data.template_cloudinit_config.app.rendered
   tags      = [local.app_tag]
 
   lifecycle {
@@ -14,7 +34,7 @@ resource "digitalocean_droplet" "app" {
   }
 }
 
-# Simple name for SSH management.
+# Convenience record for SSH management.
 resource "digitalocean_record" "management" {
   count  = var.droplet_count
   domain = var.domain
