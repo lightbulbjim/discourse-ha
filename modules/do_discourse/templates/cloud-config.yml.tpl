@@ -22,6 +22,7 @@ runcmd:
   - mv /root/app.yml /var/discourse/containers/
   - cd /var/discourse
   - ./launcher bootstrap app
+  - ./launcher start app
 
 power_state:
   mode: reboot
