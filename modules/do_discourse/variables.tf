@@ -18,7 +18,7 @@ variable "domain" {
 }
 
 variable "subdomain" {
-  description = "Subdomain which the site will listen on. Can be @ for apex."
+  description = "Subdomain which the site will listen on. Use @ for apex."
   type        = string
   default     = "@"
 }
@@ -78,7 +78,7 @@ variable "smtp_password" {
 }
 
 variable "email_cnames" {
-  description = "Any required ESP CNAME records. Name must be fully qualified."
+  description = "Any required ESP CNAME records. `name` must be fully qualified."
   type = list(object({
     name  = string
     value = string
@@ -92,7 +92,7 @@ variable "workers" {
 }
 
 variable "admin_emails" {
-  description = "List of emails addresses that will be made admin in Discourse."
+  description = "List of email addresses that will be made admin in Discourse."
   type        = list(string)
 }
 
