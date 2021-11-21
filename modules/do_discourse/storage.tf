@@ -4,8 +4,8 @@ resource "digitalocean_database_cluster" "postgres" {
   private_network_uuid = digitalocean_vpc.main.id
   engine               = "pg"
   version              = "13"
-  size                 = "db-s-1vcpu-1gb"
-  node_count           = 1
+  size                 = var.postgres_droplet_size
+  node_count           = 2
 }
 
 resource "digitalocean_database_firewall" "postgres" {
@@ -27,8 +27,8 @@ resource "digitalocean_database_cluster" "redis" {
   private_network_uuid = digitalocean_vpc.main.id
   engine               = "redis"
   version              = "6"
-  size                 = "db-s-1vcpu-1gb"
-  node_count           = 1
+  size                 = var.redis_droplet_size
+  node_count           = 2
 }
 
 resource "digitalocean_database_firewall" "redis" {

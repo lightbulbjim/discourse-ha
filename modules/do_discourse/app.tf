@@ -12,27 +12,21 @@ data "template_file" "discourse_app_config" {
     smtp_password = var.smtp_password
 
     # Database
-    db_name         = digitalocean_database_cluster.postgres.database
-    db_user         = digitalocean_database_cluster.postgres.user
-    db_password     = digitalocean_database_cluster.postgres.password
-    db_primary_host = digitalocean_database_cluster.postgres.private_host
-    db_primary_port = digitalocean_database_cluster.postgres.port
-    db_replica_host = "changeme"
-    db_replica_port = 12345
+    db_host     = digitalocean_database_cluster.postgres.private_host
+    db_port     = digitalocean_database_cluster.postgres.port
+    db_user     = digitalocean_database_cluster.postgres.user
+    db_password = digitalocean_database_cluster.postgres.password
+    db_name     = digitalocean_database_cluster.postgres.database
 
     # Main Redis
-    redis_password     = digitalocean_database_cluster.redis.password
-    redis_primary_host = digitalocean_database_cluster.redis.private_host
-    redis_primary_port = digitalocean_database_cluster.redis.port
-    redis_replica_host = "changeme"
-    redis_replica_port = 12345
+    redis_host     = digitalocean_database_cluster.redis.private_host
+    redis_port     = digitalocean_database_cluster.redis.port
+    redis_password = digitalocean_database_cluster.redis.password
 
     # Message bus
-    mb_redis_password     = digitalocean_database_cluster.redis.password
-    mb_redis_primary_host = digitalocean_database_cluster.redis.private_host
-    mb_redis_primary_port = digitalocean_database_cluster.redis.port
-    mb_redis_replica_host = "changeme"
-    mb_redis_replica_port = 12345
+    mb_redis_host     = digitalocean_database_cluster.redis.private_host
+    mb_redis_port     = digitalocean_database_cluster.redis.port
+    mb_redis_password = digitalocean_database_cluster.redis.password
   }
 }
 

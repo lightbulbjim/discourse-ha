@@ -25,6 +25,7 @@ resource "digitalocean_loadbalancer" "public" {
   name        = "${var.site_name}-public"
   region      = var.region
   vpc_uuid    = digitalocean_vpc.main.id
+  size        = var.loadbalancer_size
   droplet_tag = local.app_tag
 
   redirect_http_to_https = true

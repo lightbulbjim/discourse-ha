@@ -29,6 +29,12 @@ variable "region" {
   default     = "sgp1"
 }
 
+variable "loadbalancer_size" {
+  description = "Size of the load balancer."
+  type        = string
+  default     = "lb-small"
+}
+
 variable "droplet_count" {
   description = "Number of app servers to run."
   type        = number
@@ -52,6 +58,19 @@ variable "swap_gb" {
   type        = number
   default     = 2
 }
+
+variable "postgres_droplet_size" {
+  description = "Droplet size to use for Postgres nodes."
+  type        = string
+  default     = "db-s-1vcpu-2gb" # Minimum size required for active + standby.
+}
+
+variable "redis_droplet_size" {
+  description = "Droplet size to use for Redis nodes."
+  type        = string
+  default     = "db-s-1vcpu-2gb" # Minimum size required for active + standby.
+}
+
 
 variable "smtp_server" {
   description = "ESP SMTP server."
