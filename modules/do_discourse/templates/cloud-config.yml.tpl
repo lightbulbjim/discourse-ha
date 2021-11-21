@@ -21,5 +21,8 @@ runcmd:
   - git clone https://github.com/discourse/discourse_docker.git /var/discourse
   - mv /root/app.yml /var/discourse/containers/
   - cd /var/discourse
+  - ./launcher bootstrap app
 
-final_message: "Provisioning complete after $UPTIME seconds."
+power_state:
+  mode: reboot
+  message: "Provisioning complete after $UPTIME seconds, rebooting..."

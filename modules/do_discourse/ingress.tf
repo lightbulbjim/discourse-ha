@@ -49,5 +49,11 @@ resource "digitalocean_loadbalancer" "public" {
     port     = 80
     protocol = "http"
     path     = "/"
+
+    # These are setup for fast development rather than production.
+    check_interval_seconds   = 3
+    response_timeout_seconds = 5
+    unhealthy_threshold      = 2
+    healthy_threshold        = 2
   }
 }
