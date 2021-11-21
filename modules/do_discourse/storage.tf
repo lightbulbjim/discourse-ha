@@ -16,11 +16,6 @@ resource "digitalocean_database_firewall" "postgres" {
   }
 }
 
-resource "digitalocean_database_db" "postgres" {
-  cluster_id = digitalocean_database_cluster.postgres.id
-  name       = "discourse"
-}
-
 resource "digitalocean_database_cluster" "redis" {
   name                 = "${var.site_name}-redis"
   region               = var.region
