@@ -23,7 +23,8 @@ All other variables are module-level, and are defined in `modules/do_discourse/v
 
 The example in `main.tf` should give a good idea of what the variables look like in practice.
 
-### Domain Notes
+
+## Domain Notes
 
 There are two variables used to specify the public DNS domain: `domain` and `subdomain`.
 
@@ -48,7 +49,8 @@ module "discourse_example_com" {
 }
 ```
 
-### Multiple Instances
+
+## Multiple Instances
 
 If creating multiple instances:
 
@@ -56,6 +58,48 @@ If creating multiple instances:
 2. Each instance should have unique SMTP and Spaces credentials.
 
 
-## Sharp Edges
+## Database Scaling
+
+The Postgres and Redis clusters are setup with two nodes in a active/standby arrangement. DigitalOcean handle the failover [automatically](https://docs.digitalocean.com/products/databases/#high-availability).
+
+Note that there are no read replicas defined (although DigitalOcean do support them). The multi-node configuration is for HA, not performance.
+
+
+## App Server Provisioning
+
+This demo focuses on the infrastructure, so the provisioning of the app servers is a little under-engineered. Specifically, a vanilla vendor image is used and all provisioning happens via cloud-init at first boot. This raises the following concerns:
+
+1. It's hard to test without deploying.
+2. Secrets end up in DigitalOcean's metadata service.
+3. First boot takes a long time, as Discourse goes through it's build/minify process.
+4. Things are downloaded onto the app nodes first boot provisioning, adding outside dependencies.
+5. Setup tasks like Rails DB migrations are performed on all app servers concurrently. This hasn't caused any problems for me (yet) but is not ideal and probably unnecessary.
+
+In a production environment it would be better to:
+
+1. Have an image bakery which takes a base image, performs any provisioning steps and then saves the resulting image.
+2. The baked image would be used when creating app servers.
+3. A minimal amount of customisation would be injected on boot to customise the server.
+4. Secrets would be managed by a dedicated service (eg Vault).
+
+
+## Maintenance/Outage Page
+
+There is none. If there are no healthy app servers then you will see a raw unstyled 503 page from the load balancer.
+
+
+## Rough Edges
+
+### Using Let's Encrypt certificates in dev
 
 Let's Encrypt is used to generate the main TLS certificate and imposes [rate limits](https://letsencrypt.org/docs/rate-limits/). Each time the certificate resource is created a new certificate is requested from Let's Encrypt, so if you iterate through many destroy/create cycles (likely during development) you may hit the limit.
+
+
+## Todo
+
+* Object store
+* CDN
+* Message bus Redis
+* Test failover
+* Check if force_https is needed
+* Add provider requirements in root and child modules
