@@ -1,12 +1,12 @@
+variable "site_name" {
+  description = "Unique name for this Discourse site. Used to identify resources."
+  type        = string
+  default     = "discourse"
+}
+
 variable "ssh_key_name" {
   description = "Name of an SSH key in your DigitalOcean account."
   type        = string
-}
-
-variable "site_name" {
-  description = "Unique string which will be used when naming resources."
-  type        = string
-  default     = "discourse"
 }
 
 # The domain must be preexisting in the account. Don't want to accidentally
@@ -86,7 +86,7 @@ variable "email_cnames" {
 }
 
 variable "workers" {
-  description = "Number of Unicorn workers."
+  description = "Number of Unicorn workers per app server."
   type        = number
   default     = 2
 }
