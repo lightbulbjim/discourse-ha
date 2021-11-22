@@ -11,6 +11,7 @@ env:
   LANGUAGE: en_US.UTF-8
   EMBER_CLI_PROD_ASSETS: 1
   DISCOURSE_HOSTNAME: ${hostname}
+  DISCOURSE_FORCE_HTTPS: true
   DISCOURSE_DEVELOPER_EMAILS: '${admin_emails}'
   UNICORN_WORKERS: ${workers}
 
@@ -34,16 +35,20 @@ env:
   DISCOURSE_REDIS_PASSWORD: ${redis_password}
   DISCOURSE_REDIS_DB: 0
 
-  # Not sure how needed this is, but it can't hurt...
   DISCOURSE_MESSAGE_BUS_REDIS_HOST: ${mb_redis_host}
   DISCOURSE_MESSAGE_BUS_REDIS_PORT: ${mb_redis_port}
   DISCOURSE_MESSAGE_BUS_REDIS_PASSWORD: ${mb_redis_password}
   DISCOURSE_MESSAGE_BUS_REDIS_DB: 1
 
-
-  ## The http or https CDN address for this Discourse instance (configured to pull)
-  ## see https://meta.discourse.org/t/14857 for details
-  #DISCOURSE_CDN_URL: https://discourse-cdn.example.com
+  DISCOURSE_USE_S3: true
+  DISCOURSE_S3_REGION: ${region}
+  DISCOURSE_S3_ENDPOINT: https://${region}.digitaloceanspaces.com
+  DISCOURSE_S3_ACCESS_KEY_ID: ${spaces_access_key_id}
+  DISCOURSE_S3_SECRET_ACCESS_KEY: ${spaces_secret_access_key}
+  DISCOURSE_S3_CDN_URL: https://${spaces_bucket_domain}
+  DISCOURSE_S3_BUCKET: ${spaces_bucket_name}
+  DISCOURSE_BACKUP_LOCATION: s3
+  DISCOURSE_S3_BACKUP_BUCKET: ${spaces_bucket_name}/backups
 
 volumes:
   - volume:
@@ -52,3 +57,10 @@ volumes:
   - volume:
       host: /var/discourse/shared/web-only/log/var-log
       guest: /var/log
+
+hooks:
+  after_assets_precompile:
+    - exec:
+        cd: $home
+        cmd:
+          - sudo -E -u discourse bundle exec rake s3:upload_assets

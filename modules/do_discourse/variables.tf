@@ -9,6 +9,18 @@ variable "ssh_key_name" {
   type        = string
 }
 
+variable "spaces_access_id" {
+  description = "DigitalOcean Spaces access key ID. Should be different per site."
+  type        = string
+  sensitive   = true
+}
+
+variable "spaces_secret_key" {
+  description = "DigitalOcean Spaces secret key. Should be different per site."
+  type        = string
+  sensitive   = true
+}
+
 # The domain must be preexisting in the account. Don't want to accidentally
 # destroy it and leave a dangling delegation behind.
 variable "domain" {

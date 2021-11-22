@@ -40,5 +40,7 @@ resource "random_id" "id" {
 }
 
 resource "digitalocean_spaces_bucket" "assets" {
-  name = "${var.site_name}-${random_id.id.hex}"
+  name          = "${var.site_name}-assets-${random_id.id.hex}"
+  region        = var.region
+  force_destroy = true
 }

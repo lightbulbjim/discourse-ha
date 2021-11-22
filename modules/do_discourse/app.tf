@@ -4,6 +4,7 @@ data "template_file" "discourse_app_config" {
     hostname     = digitalocean_record.public.fqdn
     admin_emails = join(",", var.admin_emails)
     workers      = var.workers
+    region       = var.region
 
     # Email
     smtp_address  = var.smtp_server
@@ -27,6 +28,12 @@ data "template_file" "discourse_app_config" {
     mb_redis_host     = digitalocean_database_cluster.redis.private_host
     mb_redis_port     = digitalocean_database_cluster.redis.port
     mb_redis_password = digitalocean_database_cluster.redis.password
+
+    # Object storage
+    spaces_access_key_id     = var.spaces_access_id
+    spaces_secret_access_key = var.spaces_secret_key
+    spaces_bucket_name       = digitalocean_spaces_bucket.assets.name
+    spaces_bucket_domain     = digitalocean_spaces_bucket.assets.bucket_domain_name
   }
 }
 

@@ -1,10 +1,12 @@
 module "discourse_killred_net" {
-  source        = "./modules/do_discourse"
-  ssh_key_name  = "wowbagger"
-  site_name     = "discourse"
-  domain        = "discourse.killred.net"
-  droplet_count = 2
-  smtp_password = var.sendgrid_api_key
+  source            = "./modules/do_discourse"
+  ssh_key_name      = "wowbagger"
+  site_name         = "discourse"
+  domain            = "discourse.killred.net"
+  droplet_count     = 2
+  spaces_access_id  = var.spaces_access_id
+  spaces_secret_key = var.spaces_secret_key
+  smtp_password     = var.sendgrid_api_key
   email_cnames = [
     {
       name  = "em3504.discourse.killred.net.",
