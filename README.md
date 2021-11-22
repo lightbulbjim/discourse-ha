@@ -12,7 +12,7 @@ To build this stack you will need the following:
 1. A DigitalOcean account.
 2. A DNS domain which is managed by your DigitalOcean account.
 3. An ESP (email service provider) account for outgoing email. Tested with SendGrid, but should work with any which allow you to send via authenticated SMTP over TLS.
-4. The DNS domain from step 2 configured as a sending domain in the ESP.
+4. A DNS domain from configured as a sending domain in the ESP.
 
 
 ## Using the Module
