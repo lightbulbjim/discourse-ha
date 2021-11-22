@@ -4,6 +4,18 @@ variable "site_name" {
   default     = "discourse"
 }
 
+variable "discourse_docker_version" {
+  description = "Git ref of the discourse_docker tooling version to use."
+  type        = string
+  default     = "main"
+}
+
+variable "discourse_version" {
+  description = "Git ref of the Discourse version to use."
+  type        = string
+  default     = "tests-passed"
+}
+
 variable "ssh_key_name" {
   description = "Name of an SSH key in your DigitalOcean account."
   type        = string
@@ -21,8 +33,8 @@ variable "spaces_secret_key" {
   sensitive   = true
 }
 
-# The domain must be preexisting in the account. Don't want to accidentally
-# destroy it and leave a dangling delegation behind.
+# The domain must preexist in the account. Don't want to accidentally destroy
+# it and leave a dangling delegation behind.
 variable "domain" {
   description = "DNS domain in your DigitalOcean account."
   type        = string
@@ -114,6 +126,7 @@ variable "email_cnames" {
     name  = string
     value = string
   }))
+  default = []
 }
 
 variable "workers" {

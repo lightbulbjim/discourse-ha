@@ -19,8 +19,9 @@ write_files:
 
 runcmd:
   - git clone https://github.com/discourse/discourse_docker.git /var/discourse
-  - mv /root/app.yml /var/discourse/containers/
   - cd /var/discourse
+  - git checkout ${discourse_docker_version}
+  - mv /root/app.yml containers/
   - ./launcher bootstrap app
   - ./launcher start app
 

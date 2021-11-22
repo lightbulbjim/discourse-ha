@@ -104,8 +104,5 @@ To work around this, the CDN has been bypassed. Discourse is configured as if th
 
 ## Todo
 
-* Object store
-* CDN
-* Test failover
-* Lock git checkout hashes
 * Re-enable Let's Encrypt
+* Test failover

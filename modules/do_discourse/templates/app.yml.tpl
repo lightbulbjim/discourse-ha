@@ -5,6 +5,9 @@ templates:
 expose:
   - "80:80"
 
+params:
+  version: ${discourse_version}
+
 env:
   LC_ALL: en_US.UTF-8
   LANG: en_US.UTF-8

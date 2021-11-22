@@ -1,10 +1,11 @@
 data "template_file" "discourse_app_config" {
   template = file("${path.module}/templates/app.yml.tpl")
   vars = {
-    hostname     = digitalocean_record.public.fqdn
-    admin_emails = join(",", var.admin_emails)
-    workers      = var.workers
-    region       = var.region
+    discourse_version = var.discourse_version
+    hostname          = digitalocean_record.public.fqdn
+    admin_emails      = join(",", var.admin_emails)
+    workers           = var.workers
+    region            = var.region
 
     # Email
     smtp_address  = var.smtp_server
@@ -45,8 +46,9 @@ data "template_cloudinit_config" "app" {
   part {
     content_type = "text/cloud-config"
     content = templatefile("${path.module}/templates/cloud-config.yml.tpl", {
-      app_yml_encoded = base64encode(data.template_file.discourse_app_config.rendered)
-      swap_bytes      = var.swap_gb * 1000000000
+      app_yml_encoded          = base64encode(data.template_file.discourse_app_config.rendered)
+      swap_bytes               = var.swap_gb * 1000000000
+      discourse_docker_version = var.discourse_docker_version
     })
   }
 }
