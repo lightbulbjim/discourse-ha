@@ -8,10 +8,11 @@ data "template_file" "discourse_app_config" {
     region            = var.region
 
     # Email
-    smtp_address  = var.smtp_server
-    smtp_port     = var.smtp_server_port
-    smtp_user     = var.smtp_user
-    smtp_password = var.smtp_password
+    smtp_address         = var.smtp_server
+    smtp_port            = var.smtp_server_port
+    smtp_user            = var.smtp_user
+    smtp_password        = var.smtp_password
+    email_sending_domain = var.email_sending_domain
 
     # Database
     db_host     = digitalocean_database_cluster.postgres.private_host

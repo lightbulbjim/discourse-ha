@@ -9,6 +9,7 @@ module "discourse_killred_net" {
   spaces_access_id         = var.spaces_access_id
   spaces_secret_key        = var.spaces_secret_key
   smtp_password            = var.sendgrid_api_key
+  email_sending_domain     = "discourse.killred.net"
   email_cnames = [
     {
       name  = "em3504.discourse.killred.net.",

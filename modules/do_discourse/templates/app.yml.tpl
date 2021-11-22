@@ -23,8 +23,8 @@ env:
   DISCOURSE_SMTP_USER_NAME: ${smtp_user}
   DISCOURSE_SMTP_PASSWORD: ${smtp_password}
   DISCOURSE_SMTP_ENABLE_START_TLS: true
-  DISCOURSE_SMTP_DOMAIN: ${hostname}
-  DISCOURSE_NOTIFICATION_EMAIL: noreply@${hostname}
+  DISCOURSE_SMTP_DOMAIN: ${email_sending_domain}
+  DISCOURSE_NOTIFICATION_EMAIL: noreply@${email_sending_domain}
 
   DISCOURSE_DB_HOST: ${db_host}
   DISCOURSE_DB_PORT: ${db_port}

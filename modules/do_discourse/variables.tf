@@ -38,7 +38,6 @@ variable "spaces_secret_key" {
 variable "domain" {
   description = "DNS domain in your DigitalOcean account."
   type        = string
-  default     = "discourse.example.com"
 }
 
 variable "subdomain" {
@@ -118,6 +117,11 @@ variable "smtp_password" {
   description = "ESP password."
   type        = string
   sensitive   = true
+}
+
+variable "email_sending_domain" {
+  description = "Domain to send notification emails from. Must be preconfigured in the ESP."
+  type        = string
 }
 
 variable "email_cnames" {
