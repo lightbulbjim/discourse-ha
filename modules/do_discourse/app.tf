@@ -81,8 +81,9 @@ resource "digitalocean_record" "management" {
 }
 
 resource "digitalocean_firewall" "app_firewall" {
-  name = "${var.site_name}-app"
-  tags = [local.app_tag]
+  depends_on = [digitalocean_droplet.app]
+  name       = "${var.site_name}-app"
+  tags       = [local.app_tag]
 
   inbound_rule {
     protocol         = "icmp"

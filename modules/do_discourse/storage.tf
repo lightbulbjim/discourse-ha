@@ -1,3 +1,13 @@
+# The DB nodes sometimes take longer to boot than expected, causing the
+# firewall creation to fail. Ugly, yes.
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [
+    digitalocean_database_cluster.postgres,
+    digitalocean_database_cluster.redis
+  ]
+  create_duration = "30s"
+}
+
 resource "digitalocean_database_cluster" "postgres" {
   name                 = "${var.site_name}-postgres"
   region               = var.region
@@ -6,13 +16,6 @@ resource "digitalocean_database_cluster" "postgres" {
   version              = "13"
   size                 = var.postgres_droplet_size
   node_count           = 2
-}
-
-# The DB nodes sometimes take longer to boot than expected, causing the
-# firewall creation to fail. Ugly, yes.
-resource "time_sleep" "wait_30_seconds" {
-  depends_on      = [digitalocean_database_cluster.postgres]
-  create_duration = "30s"
 }
 
 resource "digitalocean_database_firewall" "postgres" {
@@ -35,6 +38,7 @@ resource "digitalocean_database_cluster" "redis" {
 }
 
 resource "digitalocean_database_firewall" "redis" {
+  depends_on = [time_sleep.wait_30_seconds]
   cluster_id = digitalocean_database_cluster.redis.id
   rule {
     type  = "tag"
