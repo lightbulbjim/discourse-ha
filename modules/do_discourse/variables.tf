@@ -1,5 +1,5 @@
 variable "site_name" {
-  description = "Unique name for this Discourse site. Used to identify resources."
+  description = "Unique name for this site, used in resource names. Must be [A-Za-z0-9-]."
   type        = string
   default     = "discourse"
 }
@@ -142,4 +142,7 @@ variable "admin_emails" {
 
 locals {
   app_tag = "${var.site_name}-app"
+
+  # This is to avoid a dependency cycle between the certificate/loadbalancer/record.
+  discourse_fqdn = "%{if var.subdomain != "@"}${var.subdomain}.%{endif}${var.domain}"
 }

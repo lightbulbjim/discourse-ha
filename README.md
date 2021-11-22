@@ -99,10 +99,4 @@ Let's Encrypt is used to generate the main TLS certificate and imposes [rate lim
 
 Static assets and uploads are stored and served from DigitalOcean's Spaces object store. Ideally this would be fronted by a CDN, however DigitalOcean's CDN has a quirk where it always returns a garbled (compressed?) for JS files. This is a [known problem](https://meta.discourse.org/t/using-object-storage-for-uploads-s3-clones/148916#digital-ocean-spaces).
 
-To work around this, the CDN has been bypassed. Discourse is configured as if there is a CDN, but the configured (unbranded) hostname is actually that of the Spaces bucket. The bucket hostname has also been added to the CSP `script-src` value. 
-
-
-## Todo
-
-* Re-enable Let's Encrypt
-* Test failover
+To work around this, the CDN has been bypassed. Discourse is configured as if there is a CDN, but the configured (unbranded) hostname is actually that of the Spaces bucket. The bucket hostname has also been added to the CSP `script-src` value to allow assets to load.
