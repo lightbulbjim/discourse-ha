@@ -3,14 +3,10 @@ resource "digitalocean_vpc" "main" {
   region = var.region
 }
 
-# Hit the Let's Encrypt rate limit, oops!
-# Using a self-signed cert for now.
 resource "digitalocean_certificate" "public" {
-  name = "${var.site_name}-public"
-  #type    = "lets_encrypt"
-  #domains = [digitalocean_record.public.fqdn]
-  private_key      = file("../ssl/discourse.key")
-  leaf_certificate = file("../ssl/discourse.crt")
+  name    = "${var.site_name}-public"
+  type    = "lets_encrypt"
+  domains = [local.discourse_fqdn]
 }
 
 resource "digitalocean_loadbalancer" "public" {

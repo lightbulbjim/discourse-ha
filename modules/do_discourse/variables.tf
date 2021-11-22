@@ -147,6 +147,8 @@ variable "admin_emails" {
 locals {
   app_tag = "${var.site_name}-app"
 
-  # This is to avoid a dependency cycle between the certificate/loadbalancer/record.
+  # Ideally this could be inferred from the front door DNS record, however
+  # that creates a dependency cycle between the certificate/LB/DNS record.
+  # So we construct the FQDN first and use it in the certificate provisioning.
   discourse_fqdn = "%{if var.subdomain != "@"}${var.subdomain}.%{endif}${var.domain}"
 }
