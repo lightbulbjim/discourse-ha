@@ -95,11 +95,17 @@ There is none. If there are no healthy app servers then you will see a raw unsty
 Let's Encrypt is used to generate the main TLS certificate and imposes [rate limits](https://letsencrypt.org/docs/rate-limits/). Each time the certificate resource is created a new certificate is requested from Let's Encrypt, so if you iterate through many destroy/create cycles (likely during development) you may hit the limit.
 
 
+### CDN
+
+Static assets and uploads are stored and served from DigitalOcean's Spaces object store. Ideally this would be fronted by a CDN, however DigitalOcean's CDN has a quirk where it always returns a garbled (compressed?) for JS files. This is a [known problem](https://meta.discourse.org/t/using-object-storage-for-uploads-s3-clones/148916#digital-ocean-spaces).
+
+To work around this, the CDN has been bypassed. Discourse is configured as if there is a CDN, but the configured (unbranded) hostname is actually that of the Spaces bucket. The bucket hostname has also been added to the CSP `script-src` value. 
+
+
 ## Todo
 
 * Object store
 * CDN
-* Message bus Redis
 * Test failover
-* Check if force_https is needed
-* Add provider requirements in root and child modules
+* Lock git checkout hashes
+* Re-enable Let's Encrypt

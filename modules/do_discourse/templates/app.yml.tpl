@@ -45,10 +45,11 @@ env:
   DISCOURSE_S3_ENDPOINT: https://${region}.digitaloceanspaces.com
   DISCOURSE_S3_ACCESS_KEY_ID: ${spaces_access_key_id}
   DISCOURSE_S3_SECRET_ACCESS_KEY: ${spaces_secret_access_key}
-  DISCOURSE_S3_CDN_URL: https://${spaces_bucket_domain}
+  DISCOURSE_S3_CDN_URL: //${spaces_bucket_domain}
+  DISCOURSE_CONTENT_SECURITY_POLICY_SCRIPT_SRC: ${spaces_bucket_domain}
   DISCOURSE_S3_BUCKET: ${spaces_bucket_name}
-  DISCOURSE_BACKUP_LOCATION: s3
   DISCOURSE_S3_BACKUP_BUCKET: ${spaces_bucket_name}/backups
+  DISCOURSE_BACKUP_LOCATION: s3
 
 volumes:
   - volume:
