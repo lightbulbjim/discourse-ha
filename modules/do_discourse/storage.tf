@@ -8,7 +8,15 @@ resource "digitalocean_database_cluster" "postgres" {
   node_count           = 2
 }
 
+# The DB nodes sometimes take longer to boot than expected, causing the
+# firewall creation to fail. Ugly, yes.
+resource "time_sleep" "wait_30_seconds" {
+  depends_on      = [digitalocean_database_cluster.postgres]
+  create_duration = "30s"
+}
+
 resource "digitalocean_database_firewall" "postgres" {
+  depends_on = [time_sleep.wait_30_seconds]
   cluster_id = digitalocean_database_cluster.postgres.id
   rule {
     type  = "tag"
